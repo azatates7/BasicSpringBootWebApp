@@ -1,0 +1,30 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* ⭐ KRİTİK */
+}
+
+main {
+    flex: 1;
+}
+
+.footer {
+    background: #020617;
+    color: white;
+    padding: 16px;
+    text-align: center;
+}
+
+.logo-a {
+    background: #0d6efd;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+}

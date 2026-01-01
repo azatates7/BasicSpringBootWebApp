@@ -1,0 +1,4 @@
+com/example/webapp/WebappApplication.class
+com/example/webapp/controller/PageController.class
+com/example/webapp/config/MessageConfig.class
+com/example/webapp/config/LocaleConfig.class
