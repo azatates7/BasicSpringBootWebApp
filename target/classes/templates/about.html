@@ -1,59 +1,128 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title th:text="#{menu.about}"></title>
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{menu.about} + ' | Azat Ateş'">About</title>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Kaymayı önleyen ana yapı */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar-nav .nav-link { color: rgba(255,255,255,0.8) !important; margin-right: 15px; }
+        .navbar-nav .nav-link:hover { color: #fff !important; }
+        .lang-link { color: #fff; text-decoration: none; font-size: 0.85rem; opacity: 0.6; }
+        .lang-active { opacity: 1; font-weight: 800; border-bottom: 2px solid #0d6efd; }
+
+        /* MERKEZLEME ÇÖZÜMÜ */
+        main.flex-grow-1 {
+            display: flex;
+            align-items: center; /* Dikeyde tam ortalama */
+            justify-content: center; /* Yatayda tam ortalama */
+            padding: 40px 20px;
+        }
+
+        .about-card {
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            padding: 60px 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .about-title { font-size: 2.5rem; font-weight: 800; color: #2d3436; margin-bottom: 25px; }
+        .about-text { font-size: 1.15rem; color: #636e72; line-height: 1.8; margin-bottom: 35px; }
+
+        .btn-back {
+            background-color: #0d6efd;
+            color: white;
+            padding: 12px 35px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover { background-color: #0b5ed7; transform: translateY(-2px); color: white; box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2); }
+
+        /* Footer Sabitleme */
+        .custom-footer { background: #020617; color: #f8fafc; padding: 40px 0; text-align: center; width: 100%; }
+        .footer-content { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .footer-email { color: #3b82f6; text-decoration: none; font-size: 1rem; transition: 0.3s; }
+        .footer-email:hover { color: #60a5fa; text-decoration: underline; }
+        .footer-socials { display: flex; gap: 20px; margin-top: 5px; }
+        .footer-socials a { color: #3b82f6; text-decoration: none; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .footer-socials a:hover { color: #fff; }
+    </style>
 </head>
-<body class="bg-light">
+<body>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" th:href="@{/}">
-            <span class="logo-a">A</span>
+            <span style="background:#0d6efd; padding:5px 12px; border-radius:8px; font-weight:bold;">A</span>
         </a>
-        <div class="navbar-nav">
-            <a th:text="#{menu.home}" href="/"></a> |
-            <a th:text="#{menu.about}" href="/about"></a> |
-            <a th:text="#{menu.cv}" href="/cv/download"></a> |
-        </div>
-        <div>
-            🌍 Lang:
-            <a href="?lang=tr">TR</a> |
-            <a href="?lang=en">EN</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}" th:text="#{menu.home}">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" th:href="@{/about}" th:text="#{menu.about}">About</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/cv/download}" th:text="#{menu.cv}">Download CV</a></li>
+            </ul>
+            <div class="d-flex gap-2 align-items-center">
+                <a href="?lang=tr" class="lang-link" th:classappend="${#locale.language == 'tr'} ? 'lang-active' : ''">TR</a>
+                <span class="text-secondary small">|</span>
+                <a href="?lang=en" class="lang-link" th:classappend="${#locale.language == 'en'} ? 'lang-active' : ''">EN</a>
+            </div>
         </div>
     </div>
 </nav>
-<main class="container">
-    <div class="text-center">
-        <h1 th:text="#{menu.aboutMe}"></h1>
-        <p th:text="#{menu.aboutText}"></p>
-    </div>
-    <div class="text-center">
-        <a th:href="@{/}" class="btn btn-outline-primary" th:text="#{menu.back}"></a>
+
+<main class="flex-grow-1">
+    <div class="about-card">
+        <h1 class="about-title" th:text="#{menu.about}">About</h1>
+        <p class="about-text" th:text="#{about.description}">
+            Software developer content here.
+        </p>
+        <a th:href="@{/}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> <span th:text="#{about.back}">Back</span>
+        </a>
     </div>
 </main>
-<footer class="footer">
-    <div class="footer-container">
 
-        <div class="footer-left">
-            <p th:text="#{footer.copy}"></p>
-        </div>
+<footer class="custom-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-info" th:text="#{footer.copy}"></div>
 
-        <div class="footer-center">
-            <p><a href="mailto:azatates4977@gmail.com" th:text="#{footer.contact}"></a></p>
-        </div>
-
-        <div class="footer-right">
-            <a href="https://github.com/azatates7" target="_blank" class="social-link">
-                <i class="fab fa-github"></i> GitHub
+            <a href="mailto:azatates4977@gmail.com" class="footer-email">
+                <span th:text="#{footer.contact}">İletişim: azatates4977@gmail.com</span>
             </a>
-            <a href="https://linkedin.com/in/azatates7" target="_blank" class="social-link">
-                <i class="fab fa-linkedin"></i> LinkedIn
-            </a>
-        </div>
 
+            <div class="footer-socials">
+                <a href="https://github.com/azatates7" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://linkedin.com/in/azatates7" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            </div>
+        </div>
     </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
