@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="tr">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="#{app.title}">Portfolio</title>
     <link rel="icon" type="image/png" th:href="@{/images/logo.png}">
 
@@ -10,34 +11,29 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; display: flex; flex-direction: column; min-vh-100; }
-
-        /* Navbar */
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; display: flex; flex-direction: column; min-height: 100vh; margin: 0; }
         .navbar-nav .nav-link { color: rgba(255,255,255,0.8) !important; margin-right: 15px; font-size: 0.95rem; }
         .navbar-nav .nav-link:hover { color: #fff !important; }
-        .lang-link { color: #fff; text-decoration: none; font-size: 0.85rem; opacity: 0.6; padding: 2px 5px; }
+
+        /* Dil Seçenekleri Stili */
+        .lang-link { color: #fff; text-decoration: none; font-size: 0.85rem; opacity: 0.6; padding: 2px 5px; cursor: pointer; border: none; background: none; }
         .lang-active { opacity: 1; font-weight: 800; border-bottom: 2px solid #0d6efd; }
 
-        /* Swiper & Ekonomi Kartları */
         .swiper { width: 100%; max-width: 900px; height: 420px; border-radius: 25px; margin: 40px auto; background: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         .economy-card { text-align: center; padding: 40px; }
         .economy-card i { font-size: 3.5rem; margin-bottom: 20px; }
         .label { font-size: 1.8rem; font-weight: 700; color: #2d3436; margin-bottom: 30px; }
-
         .price-container { display: flex; justify-content: center; gap: 15px; }
         .price-box { border: 1px solid #edf2f7; padding: 15px 30px; border-radius: 16px; min-width: 180px; background: #fff; }
         .price-box span { display: block; font-size: 0.75rem; font-weight: 700; color: #a0aec0; text-transform: uppercase; margin-bottom: 8px; }
         .buy-price { color: #2ecc71; font-size: 1.6rem; font-weight: 800; }
         .sell-price { color: #e74c3c; font-size: 1.6rem; font-weight: 800; }
+        .silver-icon { color: #bdc3c7 !important; }
 
-        /* Gümüş Özel Rengi */
-        .silver-icon { color: #bdc3c7 !important; filter: drop-shadow(0 0 5px rgba(0,0,0,0.05)); }
-
-        /* FOOTER (Görseldeki Gibi 2026 Tasarımı) */
         .custom-footer { background: #020617; color: #f8fafc; padding: 40px 0; margin-top: auto; text-align: center; }
         .footer-content { display: flex; flex-direction: column; gap: 12px; align-items: center; }
-        .footer-email { color: #3b82f6; text-decoration: none; font-size: 1rem; transition: 0.3s ease; }
-        .footer-email:hover { color: #60a5fa; text-decoration: underline; }
+        .footer-email { color: #3b82f6; text-decoration: none; font-size: 1rem; }
+        .footer-email:hover { text-decoration: underline; }
         .footer-socials { display: flex; gap: 20px; margin-top: 5px; }
         .footer-socials a { color: #3b82f6; text-decoration: none; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
         .footer-socials a:hover { color: #fff; }
@@ -60,9 +56,9 @@
                 <li class="nav-item"><a class="nav-link" th:href="@{/cv/download}" th:text="#{menu.cv}">CV İndir</a></li>
             </ul>
             <div class="d-flex gap-2 align-items-center">
-                <a href="?lang=tr" class="lang-link" th:classappend="${#locale.language == 'tr'} ? 'lang-active' : ''">TR</a>
+                <button onclick="changeLanguage('tr')" class="lang-link" th:classappend="${#locale.language == 'tr'} ? 'lang-active' : ''">TR</button>
                 <span class="text-secondary small">|</span>
-                <a href="?lang=en" class="lang-link" th:classappend="${#locale.language == 'en'} ? 'lang-active' : ''">EN</a>
+                <button onclick="changeLanguage('en')" class="lang-link" th:classappend="${#locale.language == 'en'} ? 'lang-active' : ''">EN</button>
             </div>
         </div>
     </div>
@@ -71,7 +67,7 @@
 <main class="container">
     <div class="text-center mt-5">
         <h1 class="fw-bold" th:text="#{home.welcome}">Hoş Geldiniz</h1>
-        <p class="text-muted" th:text="#{home.info}">Anlık piyasa verileri.</p>
+        <p class="text-muted" th:text="#{home.info}">Piyasa verileri anlık olarak güncellenmektedir.</p>
     </div>
 
     <div class="swiper mySwiper">
@@ -87,12 +83,12 @@
 <footer class="custom-footer">
     <div class="container">
         <div class="footer-content">
-            <div class="footer-info" th:text="#{footer.copy}">© 2026 Tüm Hakları Saklıdır.</div>
-
+            <div class="footer-info">
+                &copy; <span th:text="#{footer.copy}">2026 Tüm Hakları Saklıdır.</span>
+            </div>
             <a href="mailto:azatates4977@gmail.com" class="footer-email">
                 <span th:text="#{footer.contact}">İletişim: azatates4977@gmail.com</span>
             </a>
-
             <div class="footer-socials">
                 <a href="https://github.com/azatates7" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                 <a href="https://linkedin.com/in/azatates7" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
@@ -106,6 +102,25 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
+
+    // 1. Dili değiştiren ve URL'yi temiz tutan JavaScript
+    function changeLanguage(lang) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', lang);
+        window.location.href = url.toString();
+    }
+
+    // Sayfa yüklendiğinde URL'deki ?lang= kısmını temizle
+    window.addEventListener('DOMContentLoaded', () => {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has('lang')) {
+            url.searchParams.delete('lang');
+            // Sayfa yenilenmeden URL adres çubuğunu günceller
+            window.history.replaceState({}, document.title, url.pathname);
+        }
+    });
+
+    // 2. Ekonomi Verilerini Çeken Fonksiyon
     async function fetchEconomyData() {
         const labels = {
             buy: /*[[#{economy.buy}]]*/ 'Alış',
@@ -115,7 +130,10 @@
             gramGold: /*[[#{asset.gold.gram}]]*/ 'Gram Altın',
             cutGold: /*[[#{asset.gold.cut}]]*/ 'Kesme Altın (24 Ayar)',
             halfGold: /*[[#{asset.gold.half}]]*/ 'Yarım Altın',
-            silver: /*[[#{asset.silver}]]*/ 'Gümüş'
+            silver: /*[[#{asset.silver}]]*/ 'Gümüş',
+            bgn: /*[[#{asset.leva}]]*/ 'Bulgar Levası',
+            rub: /*[[#{asset.ruble}]]*/ 'Rus Rublesi',
+            btc: /*[[#{asset.btc}]]*/ 'Bitcoin'
         };
 
         try {
@@ -123,20 +141,25 @@
             const data = await response.json();
             const rates = data.usd;
             const tryRate = rates.try;
+
             const gramGold = ((1 / rates.xau) / 31.1035) * tryRate;
             const silverRate = ((1 / rates.xag) / 31.1035) * tryRate;
-
             const spread = 0.004;
             const calc = (val) => ({ buy: val * (1 - spread), sell: val * (1 + spread) });
 
-            const assets = [
+            let assets = [
                 { name: labels.usd, ...calc(tryRate), icon: 'fa-dollar-sign', color: '#27ae60' },
                 { name: labels.eur, ...calc(tryRate / rates.eur), icon: 'fa-euro-sign', color: '#2980b9' },
                 { name: labels.gramGold, ...calc(gramGold), icon: 'fa-coins', color: '#f1c40f' },
                 { name: labels.cutGold, ...calc(gramGold * 1.001), icon: 'fa-square', color: '#d4af37' },
                 { name: labels.halfGold, ...calc(gramGold * 3.26), icon: 'fa-circle-half-stroke', color: '#d4af37' },
-                { name: labels.silver, ...calc(silverRate), icon: 'fa-leaf', customClass: 'silver-icon' }
+                { name: labels.silver, ...calc(silverRate), icon: 'fa-leaf', customClass: 'silver-icon' },
+                { name: labels.bgn, ...calc(tryRate / rates.bgn), icon: 'fa-building-columns', color: '#16a085' },
+                { name: labels.rub, ...calc(tryRate / rates.rub), icon: 'fa-ruble-sign', color: '#c0392b' },
+                { name: labels.btc, ...calc(tryRate / rates.btc), icon: 'fa-brands fa-bitcoin', color: '#f39c12' }
             ];
+
+            assets.sort((a, b) => a.sell - b.sell);
 
             const container = document.getElementById('economy-container');
             if(!container) return;
@@ -144,8 +167,10 @@
 
             const locale = /*[[${#locale.language}]]*/ 'tr';
             const fmt = new Intl.NumberFormat(locale === 'tr' ? 'tr-TR' : 'en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const btcFmt = new Intl.NumberFormat(locale === 'tr' ? 'tr-TR' : 'en-US', { maximumFractionDigits: 0 });
 
             assets.forEach(asset => {
+                const isBtc = asset.name === 'Bitcoin';
                 const iconStyle = asset.customClass ? '' : `style="color: ${asset.color}"`;
                 container.innerHTML += `
                     <div class="swiper-slide">
@@ -153,14 +178,19 @@
                             <i class="fas ${asset.icon} ${asset.customClass || ''}" ${iconStyle}></i>
                             <div class="label">${asset.name}</div>
                             <div class="price-container">
-                                <div class="price-box"><span>${labels.buy}</span><div class="buy-price">₺${fmt.format(asset.buy)}</div></div>
-                                <div class="price-box"><span>${labels.sell}</span><div class="sell-price">₺${fmt.format(asset.sell)}</div></div>
+                                <div class="price-box"><span>${labels.buy}</span><div class="buy-price">₺${isBtc ? btcFmt.format(asset.buy) : fmt.format(asset.buy)}</div></div>
+                                <div class="price-box"><span>${labels.sell}</span><div class="sell-price">₺${isBtc ? btcFmt.format(asset.sell) : fmt.format(asset.sell)}</div></div>
                             </div>
                         </div>
                     </div>`;
             });
 
-            new Swiper(".mySwiper", { loop: true, autoplay: { delay: 4000 }, pagination: { el: ".swiper-pagination", clickable: true }, navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" } });
+            new Swiper(".mySwiper", {
+                loop: true,
+                autoplay: { delay: 4000 },
+                pagination: { el: ".swiper-pagination", clickable: true },
+                navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" }
+            });
         } catch (e) { console.error(e); }
     }
     window.addEventListener('load', fetchEconomyData);
