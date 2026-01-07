@@ -4,6 +4,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class KeepAliveTask {
 
@@ -14,7 +17,8 @@ public void keepAlive() {
         try {
             String url = "https://azatates.com/";
             restTemplate.getForObject(url, String.class);
-            System.out.println("Ping sended, application alive.");
+            DateFormatHelper dateFormatHelper = new DateFormatHelper();
+            System.out.println(String.format("Ping sended at [%s], application alive.", dateFormatHelper.convertMyDateFormat()));
         } catch (Exception e) {
             System.err.println("Ping Error: " + e.getMessage());
         }

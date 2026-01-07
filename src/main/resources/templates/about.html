@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="tr">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="#{menu.about} + ' | Azat Ateş'">About</title>
@@ -63,7 +63,6 @@
         }
         .btn-back:hover { background-color: #0b5ed7; transform: translateY(-2px); color: white; box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2); }
 
-        /* Footer Sabitleme */
         .custom-footer { background: #020617; color: #f8fafc; padding: 40px 0; text-align: center; width: 100%; }
         .footer-content { display: flex; flex-direction: column; gap: 12px; align-items: center; }
         .footer-email { color: #3b82f6; text-decoration: none; font-size: 1rem; transition: 0.3s; }
@@ -113,7 +112,7 @@
             <div class="footer-info" th:text="#{footer.copy}"></div>
 
             <a href="mailto:azatates4977@gmail.com" class="footer-email">
-                <span th:text="#{footer.contact}">İletişim: azatates4977@gmail.com</span>
+                <span th:text="#{footer.contact}"></span>
             </a>
 
             <div class="footer-socials">
