@@ -4,371 +4,320 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="#{app.title}">Market</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
     <style>
-        body{
-            font-family:Inter,system-ui,sans-serif;
-            background:#f8f9fa;
-            min-height:100vh;
-            display:flex;
-            flex-direction:column;
+        :root {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --primary: #0d6efd;
+            --up-color: #16a34a;
+            --down-color: #dc2626;
         }
 
-        /* NAVBAR */
-        .navbar-nav .nav-link{color:rgba(255,255,255,.85)!important}
-        .navbar-nav .nav-link:hover{color:#fff!important}
-        .lang-link{
-            color:#fff;
-            font-size:.85rem;
-            background:none;
-            border:none;
-            opacity:.6;
-            cursor:pointer;
-        }
-        .lang-active{
-            opacity:1;
-            font-weight:700;
-            border-bottom:2px solid #0d6efd;
+        [data-bs-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
         }
 
-        /* BADGES */
-        .tech-badges{
-            display:flex;
-            justify-content:center;
-            gap:10px;
-            margin:8px 0;
-        }
+        body { font-family: Inter, system-ui, sans-serif; background: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s; }
+        .navbar-nav .nav-link { color: rgba(255,255,255,.85)!important }
+        .lang-link { color: #fff; font-size: .85rem; background: none; border: none; opacity: .6; cursor: pointer; }
+        .lang-active { opacity: 1; font-weight: 700; border-bottom: 2px solid var(--primary); }
 
-        /* FILTER BAR */
-        .filter-bar{
-            display:flex;
-            justify-content:center;
-            gap:10px;
-            flex-wrap:wrap;
-            margin-bottom:10px;
-        }
+        /* FILTRE & SIRALAMA ALANI */
+        .filter-container { background: var(--card-bg); padding: 25px; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; gap: 20px; flex-wrap: wrap; align-items: center; justify-content: space-between; border: 1px solid var(--border-color); }
+        .sort-btn-group { display: flex; gap: 8px; }
+        .sort-btn { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 14px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .sort-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .sort-btn i { font-size: 0.75rem; margin-left: 5px; }
 
-        /* UPDATE */
-        .update-badge{
-            margin:10px auto 20px;
-            padding:8px 18px;
-            border-radius:999px;
-            background:#e0f2fe;
-            color:#0369a1;
-            font-weight:600;
-            width:fit-content;
-        }
+        .category-section { margin-bottom: 50px; }
+        .category-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin-bottom: 25px; padding-bottom: 12px; border-bottom: 3px solid var(--border-color); display: flex; align-items: center; gap: 15px; }
 
-        /* TABLE HEADER & CARD */
-        .economy-header,
-        .economy-card{
-            display:grid;
-            grid-template-columns:2fr 1.2fr 1.6fr 1.6fr 1fr;
-            align-items:center;
-        }
-        .economy-header{
-            font-size:.75rem;
-            color:#64748b;
-            font-weight:700;
-            margin-bottom:6px;
-        }
-        .economy-header div{text-align:center}
-        .economy-header div:first-child{text-align:left}
+        .economy-header, .economy-card { display: grid; grid-template-columns: 2.5fr 1.2fr 1.6fr 1.6fr 1fr; align-items: center; }
+        .economy-header { font-size: .8rem; color: var(--text-muted); font-weight: 700; margin-bottom: 15px; padding: 0 20px; text-transform: uppercase; }
+        .economy-header div { text-align: center }
+        .economy-header div:first-child { text-align: left }
 
-        .economy-card{
-            background:#fff;
-            border-radius:18px;
-            padding:16px;
-            margin-bottom:12px;
-            box-shadow:0 10px 25px rgba(0,0,0,.05);
-        }
+        .economy-card { background: var(--card-bg); border-radius: 18px; padding: 22px; margin-bottom: 15px; border: 1px solid var(--border-color); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .economy-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
 
-        .eco-left{display:flex;align-items:center;gap:12px}
-        .eco-left i{font-size:1.9rem}
-        .eco-label{font-weight:700}
+        /* LOGOLAR BÜYÜTÜLDÜ */
+        .eco-left { display: flex; align-items: center; gap: 18px; }
+        .eco-left i { font-size: 2.6rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        .eco-label { font-weight: 700; color: var(--text-main); font-size: 1.15rem; }
 
-        .center{text-align:center}
-        .buy{color:#16a34a;font-weight:800}
-        .sell{color:#dc2626;font-weight:800}
-        .up{color:#16a34a;font-weight:800}
-        .down{color:#dc2626;font-weight:800}
+        .center { text-align: center }
+        .buy { color: var(--up-color); font-weight: 700; }
+        .sell { color: var(--down-color); font-weight: 700; }
+        .up { color: var(--up-color); font-weight: 800 }
+        .down { color: var(--down-color); font-weight: 800 }
 
-        .sparkline-wrapper{position:relative}
-        .sparkline{
-            width:110px;height:30px;
-            background:#f8fafc;
-            border-radius:6px;
-            transition:.25s;
-        }
-        .sparkline polyline{
-            fill:none;
-            stroke:#2563eb;
-            stroke-width:2;
-        }
-        .sparkline-wrapper:hover .sparkline{
-            transform:scale(1.8);
-            position:absolute;
-            z-index:20;
-            background:#fff;
-            box-shadow:0 12px 30px rgba(0,0,0,.25);
-        }
+        .sparkline-container { border-radius: 12px; padding: 6px; display: inline-block; transition: background 0.3s; }
+        .trend-up-bg { background: rgba(22, 163, 74, 0.08); }
+        .trend-down-bg { background: rgba(220, 38, 38, 0.08); }
+        .sparkline { width: 120px; height: 45px; }
+        .sparkline polyline { fill: none; stroke-width: 3.5; }
 
-        /* FOOTER */
-        .custom-footer{
-            background:#020617;
-            color:#f8fafc;
-            padding:40px 0;
-            margin-top:auto;
-            text-align:center;
-        }
-        .footer-content{
-            display:flex;
-            flex-direction:column;
-            gap:10px;
-            align-items:center;
-        }
-        .footer-socials{
-            display:flex;
-            gap:18px;
-        }
-        .footer-socials a{
-            color:#3b82f6;
-            text-decoration:none;
-        }
-        .footer-socials a:hover{color:#fff}
+        .theme-toggle { cursor: pointer; color: #fff; font-size: 1.3rem; margin-left: 20px; border: none; background: none; }
+        .custom-footer { background: #020617; color: #f8fafc; padding: 60px 0; margin-top: auto; }
+        .footer-socials { margin-top: 30px; display: flex; justify-content: center; gap: 45px; }
+        .footer-socials a { color: #3b82f6; font-size: 2rem; transition: transform 0.3s, color 0.3s; }
+        .footer-socials a:hover { color: #fff; transform: scale(1.2); }
     </style>
 </head>
+<body data-bs-theme="light">
 
-<body>
+<div id="i18n-store" style="display:none;"
+     th:data-ons="#{asset.ons}" th:data-usd="#{asset.usd}" th:data-eur="#{asset.eur}"
+     th:data-gbp="#{asset.gbp}" th:data-azn="#{asset.azn}" th:data-kwd="#{asset.kwd}"
+     th:data-leva="#{asset.leva}" th:data-ruble="#{asset.ruble}" th:data-gram="#{asset.gold.gram}"
+     th:data-ceyrek="#{asset.gold.quarter}" th:data-yarim="#{asset.gold.half}" th:data-tam="#{asset.full_gold}"
+     th:data-republic="#{asset.republic_gold}" th:data-cut="#{asset.gold.cut}" th:data-silver="#{asset.silver}"
+     th:data-copper="#{asset.copper}" th:data-btc="#{asset.btc}"
+     th:data-gold-head="#{asset.gold.gram}">
+</div>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/}">
-            <span style="background:#0d6efd;padding:5px 12px;border-radius:8px;font-weight:bold;">A</span>
-        </a>
-
+        <a class="navbar-brand" th:href="@{/}"><span style="background:var(--primary);padding:6px 14px;border-radius:10px;font-weight:bold;">A</span></a>
         <ul class="navbar-nav me-auto">
-            <li class="nav-item"><a class="nav-link" th:text="#{menu.home}"></a></li>
-            <li class="nav-item"><a class="nav-link" th:text="#{menu.about}"></a></li>
-            <li class="nav-item"><a class="nav-link" th:text="#{menu.cv}"></a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/}" th:text="#{menu.home}"></a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/about}" th:text="#{menu.about}"></a></li>
+            <li class="nav-item"><a id="cvDownloadBtn" class="nav-link" th:href="@{/cv/download}" th:text="#{menu.cv}"></a></li>
         </ul>
-
-        <div>
-            <button class="lang-link" th:classappend="${#locale.language=='tr'}?'lang-active':''" onclick="setLang('tr')">Türkçe</button>
-            |
-            <button class="lang-link" th:classappend="${#locale.language=='en'}?'lang-active':''" onclick="setLang('en')">English</button>
+        <div class="d-flex align-items-center">
+            <button class="lang-link me-2" th:classappend="${#locale.language=='tr'}?'lang-active':''" onclick="setLang('tr')">TR</button>
+            <button class="lang-link" th:classappend="${#locale.language=='en'}?'lang-active':''" onclick="setLang('en')">EN</button>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon"><i class="fas fa-moon"></i></button>
         </div>
     </div>
 </nav>
 
-<main class="container my-5 text-center">
-
-    <h1 th:text="#{home.welcome}"></h1>
-    <p class="text-muted" th:text="#{home.info}"></p>
-
-    <div class="tech-badges">
-        <span class="badge bg-success">Spring Boot</span>
-        <span class="badge bg-primary">Java 17</span>
+<main class="container my-5">
+    <div class="text-center mb-5">
+        <h1 th:text="#{home.welcome}" class="fw-bold display-4 mb-3"></h1>
+        <p class="text-muted fs-5" th:text="#{home.info}"></p>
     </div>
 
-    <div class="filter-bar">
-        <span th:text="#{economy.sort.label}"></span>
-
-        <select id="sortField" class="form-select form-select-sm w-auto">
-            <option value="google" th:text="#{economy.sort.google}"></option>
-            <option value="sell" th:text="#{economy.sort.sell}"></option>
-            <option value="buy" th:text="#{economy.sort.buy}"></option>
-        </select>
-
-        <select id="sortDir" class="form-select form-select-sm w-auto">
-            <option value="desc" th:text="#{economy.sort.dir.desc}"></option>
-            <option value="asc" th:text="#{economy.sort.dir.asc}"></option>
-        </select>
-
-        <input id="searchInput"
-               class="form-control form-control-sm w-auto"
-               th:placeholder="#{economy.search.placeholder}">
+    <div class="filter-container">
+        <div class="sort-btn-group">
+            <button class="sort-btn active" onclick="updateSort('google')" id="btn-google">
+                Google <i id="icon-google" class="fas fa-sort-down"></i>
+            </button>
+            <button class="sort-btn" onclick="updateSort('buy')" id="btn-buy">
+                Alış <i id="icon-buy" class="fas fa-sort"></i>
+            </button>
+            <button class="sort-btn" onclick="updateSort('sell')" id="btn-sell">
+                Satış <i id="icon-sell" class="fas fa-sort"></i>
+            </button>
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" class="form-control" style="min-width:320px;"
+                   th:placeholder="#{economy.search.placeholder}" oninput="applyFiltersAndSort()">
+        </div>
     </div>
 
-    <div id="last-update" class="update-badge"></div>
-
-    <div class="economy-header mt-4">
-        <div th:text="#{economy.col.asset}"></div>
-        <div th:text="#{economy.col.google}"></div>
-        <div th:text="#{economy.col.trend}"></div>
-        <div th:text="#{economy.col.price}"></div>
-        <div th:text="#{economy.col.daily}"></div>
+    <div id="category-gold" class="category-section">
+        <h2 class="category-title"><i class="fas fa-coins text-warning"></i> <span th:text="#{asset.gold}"></span></h2>
+        <div class="economy-header">
+            <div th:text="#{economy.col.asset}"></div><div th:text="#{economy.col.google}"></div><div th:text="#{economy.col.trend}"></div><div th:text="#{economy.col.price}"></div><div th:text="#{economy.col.daily}"></div>
+        </div>
+        <div class="category-list"></div>
     </div>
 
-    <div id="economy-container"></div>
+    <div id="category-currency" class="category-section">
+        <h2 class="category-title"><i class="fas fa-money-bill-wave text-success"></i> <span th:text="#{economy.col.asset}"></span></h2>
+        <div class="category-list"></div>
+    </div>
 
+    <div id="category-other" class="category-section">
+        <h2 class="category-title"><i class="fas fa-chart-line text-primary"></i> <span th:text="#{asset.copper}"></span> & Emtia</h2>
+        <div class="category-list"></div>
+    </div>
 </main>
 
-<footer class="custom-footer">
-    <div class="footer-content">
-        <div th:text="#{footer.copy}"></div>
-        <a href="mailto:azatates4977@gmail.com" th:text="#{footer.contact}"></a>
+<footer class="custom-footer text-center">
+    <div class="container">
+        <div th:text="#{footer.copy}" class="mb-2"></div>
         <div class="footer-socials">
-            <a href="https://github.com/azatates7"><i class="fab fa-github"></i></a>
-            <a href="https://linkedin.com/in/azatates7"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/azatates7" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://linkedin.com/in/azatates7" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="mt-4">
+            <a href="mailto:azatates4977@gmail.com" class="text-decoration-none text-muted" th:text="#{footer.contact}"></a>
         </div>
     </div>
 </footer>
 
 <script>
-    let allAssets = [];   // 🔴 GLOBAL STATE
+    let allAssets = [];
+    let currentSort = { field: 'google', dir: 'desc' };
+    const lang = document.documentElement.lang || 'tr';
+    const symbol = lang === 'tr' ? '₺' : '$';
+    const i18n = document.getElementById('i18n-store').dataset;
 
-    function setLang(lang){
+    function toggleTheme() {
+        const newTheme = document.body.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        document.getElementById('themeIcon').innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    }
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.setAttribute('data-bs-theme', savedTheme);
+    document.getElementById('themeIcon').innerHTML = savedTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+
+    function setLang(l){
         const url = new URL(window.location.href);
-        url.searchParams.set('lang', lang);
+        url.searchParams.set('lang', l);
         window.location.href = url.toString();
     }
 
-    function renderAssets(list){
-        const container = document.getElementById('economy-container');
-        container.innerHTML = '';
-
-        if(list.length === 0){
-            container.innerHTML = `
-      <div class="text-center text-muted py-4">
-        Sonuç bulunamadı
-      </div>`;
-            return;
+    // SIRALAMA GÜNCELLEME (ARTAN/AZALAN İKONLARI İLE)
+    function updateSort(field) {
+        if (currentSort.field === field) {
+            currentSort.dir = currentSort.dir === 'desc' ? 'asc' : 'desc';
+        } else {
+            currentSort.field = field;
+            currentSort.dir = 'desc';
         }
 
-        list.forEach(a => {
-            const up = a.change >= 0;
-            container.innerHTML += `
-      <div class="economy-card">
-        <div class="eco-left">
-          <i class="fas ${a.icon}" style="color:${a.color}"></i>
-          <span class="eco-label">${a.name}</span>
-        </div>
+        document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${field}`).classList.add('active');
 
-        <div class="center">₺${a.google.toFixed(2)}</div>
-
-        <div class="center sparkline-wrapper">
-          <svg class="sparkline" viewBox="0 0 110 30">
-            <polyline points="0,18 25,10 55,16 80,8 110,12"/>
-          </svg>
-        </div>
-
-        <div class="center">
-          <div class="buy">₺${a.buy.toFixed(2)}</div>
-          <div class="sell">₺${a.sell.toFixed(2)}</div>
-        </div>
-
-        <div class="center ${up ? 'up' : 'down'}">
-          ${up ? '▲' : '▼'} %${Math.abs(a.change).toFixed(2)}
-        </div>
-      </div>
-    `;
+        // İkonları sıfırla ve seçili olanı güncelle
+        ['google', 'buy', 'sell'].forEach(f => {
+            const icon = document.getElementById(`icon-${f}`);
+            if (f === currentSort.field) {
+                icon.className = currentSort.dir === 'desc' ? 'fas fa-sort-down' : 'fas fa-sort-up';
+            } else {
+                icon.className = 'fas fa-sort';
+            }
         });
+
+        applyFiltersAndSort();
     }
 
-    function applyFilters(){
-        const q = document.getElementById('searchInput').value
-            .toLowerCase().trim();
-        const field = document.getElementById('sortField').value;
-        const dir = document.getElementById('sortDir').value;
+    function createCard(a) {
+        const up = a.change >= 0;
+        const trendClass = up ? 'trend-up-bg' : 'trend-down-bg';
+        const color = up ? '#16a34a' : '#dc2626';
+        const min = Math.min(...a.history);
+        const max = Math.max(...a.history);
+        const range = max - min || 1;
+        const points = a.history.map((val, idx) => {
+            const x = idx * (120 / (a.history.length - 1));
+            const y = 40 - ((val - min) / range * 35);
+            return `${x},${y}`;
+        }).join(' ');
 
-        let list = [...allAssets];
+        return `
+            <div class="economy-card">
+                <div class="eco-left">
+                    <i class="fas ${a.icon}" style="color:${a.color}"></i>
+                    <span class="eco-label">${a.name}</span>
+                </div>
+                <div class="center fw-bold fs-5">${symbol}${a.google.toLocaleString(lang, {minimumFractionDigits:2})}</div>
+                <div class="center">
+                    <div class="sparkline-container ${trendClass}">
+                        <svg class="sparkline" viewBox="0 0 120 45"><polyline points="${points}" style="stroke: ${color}"/></svg>
+                    </div>
+                </div>
+                <div class="center">
+                    <div class="buy">${symbol}${a.buy.toLocaleString(lang, {minimumFractionDigits:2})}</div>
+                    <div class="sell">${symbol}${a.sell.toLocaleString(lang, {minimumFractionDigits:2})}</div>
+                </div>
+                <div class="center ${up ? 'up' : 'down'}">${up ? '▲' : '▼'} %${Math.abs(a.change).toFixed(2)}</div>
+            </div>`;
+    }
 
-        if(q){
-            list = list.filter(a =>
-                a.name.toLowerCase().includes(q)
-            );
-        }
+    function applyFiltersAndSort() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const cats = ['gold', 'currency', 'other'];
 
-        list.sort((a, b) => {
-            const v1 = a[field];
-            const v2 = b[field];
-            return dir === 'asc' ? v1 - v2 : v2 - v1;
+        cats.forEach(cat => {
+            let filtered = allAssets.filter(a => a.category === cat && a.name.toLowerCase().includes(query));
+            filtered.sort((a, b) => {
+                return currentSort.dir === 'asc' ? a[currentSort.field] - b[currentSort.field] : b[currentSort.field] - a[currentSort.field];
+            });
+            document.querySelector(`#category-${cat} .category-list`).innerHTML = filtered.map(createCard).join('');
         });
-
-        renderAssets(list);
     }
 
     async function loadEconomy(){
-        const container = document.getElementById('economy-container');
-        container.innerHTML = `
-    <div class="text-center py-4">
-      <div class="spinner-border"></div>
-    </div>`;
+        try {
+            const responses = await Promise.all([...Array(5)].map((_, i) => {
+                const d = new Date(); d.setUTCDate(d.getUTCDate() - i);
+                const dateStr = d.toISOString().split('T')[0];
+                return fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${i===0?'latest':dateStr}/v1/currencies/usd.json`).then(r => r.json());
+            }));
 
-        const todayRes = await fetch(
-            'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json'
-        );
-        const today = await todayRes.json();
-        const r = today.usd;
+            const data = responses.map(r => r.usd);
+            const isTr = lang === 'tr';
 
-        const d = new Date();
-        d.setUTCDate(d.getUTCDate() - 1);
-        const ymd = d.toISOString().split('T')[0];
+            const make = (nameKey, icon, color, category, mapFn) => {
+                const history = data.map(d => {
+                    const val = mapFn(d);
+                    return isTr ? (val * d.try) : val;
+                }).reverse();
+                const now = history[history.length - 1];
+                const old = history[history.length - 2];
+                return {
+                    name: i18n[nameKey] || nameKey, icon, color, category,
+                    google: now, buy: now * 0.996, sell: now * 1.004,
+                    change: ((now - old) / old) * 100, history: history
+                };
+            };
 
-        const yRes = await fetch(
-            `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${ymd}/v1/currencies/usd.json`
-        );
-        const yesterday = await yRes.json();
-        const ry = yesterday.usd;
+            const getGramUsd = (d) => (1 / d.xau) / 31.1035;
 
-        const t = r.try;
-        const gram = ((1 / r.xau) / 31.1035) * t;
-        const gramY = ((1 / ry.xau) / 31.1035) * ry.try;
+            allAssets = [
+                make('ons', 'fa-mountain', '#d4af37', 'gold', d => 1 / d.xau),
+                make('gram', 'fa-coins', '#f1c40f', 'gold', d => getGramUsd(d)),
+                make('ceyrek', 'fa-coins', '#f59e0b', 'gold', d => getGramUsd(d) * 1.63),
+                make('yarim', 'fa-coins', '#d4af37', 'gold', d => getGramUsd(d) * 3.26),
+                make('tam', 'fa-circle-dot', '#d4af37', 'gold', d => getGramUsd(d) * 6.52),
+                make('republic', 'fa-landmark', '#b8860b', 'gold', d => getGramUsd(d) * 6.71),
+                make('usd', 'fa-dollar-sign', '#16a34a', 'currency', d => 1),
+                make('eur', 'fa-euro-sign', '#2563eb', 'currency', d => 1 / d.eur),
+                make('gbp', 'fa-pound-sign', '#4f46e5', 'currency', d => 1 / d.gbp),
+                make('azn', 'fa-manat-sign', '#22c55e', 'currency', d => 1 / d.azn),
+                make('kwd', 'fa-money-bill', '#0f766e', 'currency', d => 1 / d.kwd),
+                make('btc', 'fa-bitcoin', '#f59e0b', 'other', d => 1 / d.btc),
+                make('silver', 'fa-leaf', '#9ca3af', 'other', d => (1 / d.xag) / 31.1035),
+                make('copper', 'fa-cubes', '#b87333', 'other', d => 9.20)
+            ];
 
-        const make = (name, icon, color, now, old) => ({
-            name,
-            icon,
-            color,
-            google: now,
-            buy: now * 0.996,
-            sell: now * 1.004,
-            change: ((now - old) / old) * 100
-        });
-
-        allAssets = [
-            make('Dolar','fa-dollar-sign','#16a34a',t,ry.try),
-            make('Euro','fa-euro-sign','#2563eb',t/r.eur,ry.try/ry.eur),
-            make('Sterlin','fa-pound-sign','#4f46e5',t/r.gbp,ry.try/ry.gbp),
-            make('Azerbaycan Manatı','fa-manat-sign','#22c55e',t/r.azn,ry.try/ry.azn),
-            make('Kuveyt Dinarı','fa-money-bill','#0f766e',t/r.kwd,ry.try/ry.kwd),
-
-            make('Bulgar Levası','fa-building-columns','#16a085',t/r.bgn,ry.try/ry.bgn),
-            make('Rus Rublesi','fa-ruble-sign','#c0392b',t/r.rub,ry.try/ry.rub),
-
-            make('Gram Altın','fa-coins','#f1c40f',gram,gramY),
-            make('Kesme Altın (24 Ayar)','fa-square','#d4af37',gram*1.001,gramY*1.001),
-            make('Çeyrek Altın','fa-coins','#f59e0b',gram*1.63,gramY*1.63),
-            make('Yarım Altın','fa-coins','#d4af37',gram*3.26,gramY*3.26),
-
-            make('Gümüş','fa-leaf','#9ca3af',
-                ((1/r.xag)/31.1035)*t,
-                ((1/ry.xag)/31.1035)*ry.try
-            ),
-
-            make('Bitcoin','fa-bitcoin','#f59e0b',t/r.btc,ry.try/ry.btc)
-        ];
-
-        applyFilters(); // 🔥 İLK RENDER
+            applyFiltersAndSort();
+        } catch (e) { console.error("Veri yüklenemedi:", e); }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        loadEconomy();
+    document.addEventListener('DOMContentLoaded', loadEconomy);
 
-        document.getElementById('searchInput')
-            .addEventListener('input', applyFilters);
+    document.getElementById('cvDownloadBtn').addEventListener('click', function(e) {
+    e.preventDefault(); // Sayfanın yönlenmesini veya dosyanın hemen inmesini engelle
 
-        document.getElementById('sortField')
-            .addEventListener('change', applyFilters);
+    const downloadUrl = this.href;
 
-        document.getElementById('sortDir')
-            .addEventListener('change', applyFilters);
-    });
+    fetch(downloadUrl, { method: 'HEAD' })
+        .then(response => {
+            if (response.status === 403) {
+                alert("(403 Forbidden)");
+            } else if (response.ok) {
+                window.location.href = downloadUrl;
+            }
+        })
+        .catch(error => {
+            alert("Error.");
+        });
+});
 </script>
-
 </body>
 </html>
