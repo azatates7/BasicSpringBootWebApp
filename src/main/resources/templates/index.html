@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title th:text="#{app.title}">Market</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -26,31 +26,112 @@
             --border-color: #334155;
         }
 
-        body { font-family: Inter, system-ui, sans-serif; background: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s; }
+        body {
+            font-family: Inter, system-ui, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s;
+            overflow-x: hidden;
+        }
         .navbar-nav .nav-link { color: rgba(255,255,255,.85)!important }
         .lang-link { color: #fff; font-size: .85rem; background: none; border: none; opacity: .6; cursor: pointer; }
         .lang-active { opacity: 1; font-weight: 700; border-bottom: 2px solid var(--primary); }
 
-        .filter-container { background: var(--card-bg); padding: 25px; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; gap: 20px; flex-wrap: wrap; align-items: center; justify-content: space-between; border: 1px solid var(--border-color); }
-        .sort-btn-group { display: flex; gap: 8px; }
-        .sort-btn { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 14px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .sort-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-        .sort-btn i { font-size: 0.75rem; margin-left: 5px; }
+        .filter-container {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--border-color);
+        }
+        .sort-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+        .sort-btn {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sort-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .sort-btn i {
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
 
         .category-section { margin-bottom: 50px; }
-        .category-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin-bottom: 25px; padding-bottom: 12px; border-bottom: 3px solid var(--border-color); display: flex; align-items: center; gap: 15px; }
+        .category-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-        .economy-header, .economy-card { display: grid; grid-template-columns: 2.5fr 1.2fr 1.6fr 1.6fr 1fr; align-items: center; }
-        .economy-header { font-size: .8rem; color: var(--text-muted); font-weight: 700; margin-bottom: 15px; padding: 0 20px; text-transform: uppercase; }
+        .economy-header {
+            display: grid;
+            grid-template-columns: 2.5fr 1.2fr 1.6fr 1.6fr 1fr;
+            align-items: center;
+            font-size: .8rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding: 0 20px;
+            text-transform: uppercase;
+        }
         .economy-header div { text-align: center }
         .economy-header div:first-child { text-align: left }
 
-        .economy-card { background: var(--card-bg); border-radius: 18px; padding: 22px; margin-bottom: 15px; border: 1px solid var(--border-color); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .economy-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        .economy-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .economy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        }
 
-        .eco-left { display: flex; align-items: center; gap: 18px; }
-        .eco-left i { font-size: 2.6rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
-        .eco-label { font-weight: 700; color: var(--text-main); font-size: 1.15rem; }
+        .eco-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .eco-left i {
+            font-size: 2.6rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        .eco-label {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 1.15rem;
+        }
 
         .center { text-align: center }
         .buy { color: var(--up-color); font-weight: 700; }
@@ -58,17 +139,52 @@
         .up { color: var(--up-color); font-weight: 800 }
         .down { color: var(--down-color); font-weight: 800 }
 
-        .sparkline-container { border-radius: 12px; padding: 6px; display: inline-block; transition: background 0.3s; }
+        .sparkline-container {
+            border-radius: 12px;
+            padding: 6px;
+            display: inline-block;
+            transition: background 0.3s;
+        }
         .trend-up-bg { background: rgba(22, 163, 74, 0.08); }
         .trend-down-bg { background: rgba(220, 38, 38, 0.08); }
-        .sparkline { width: 120px; height: 45px; }
-        .sparkline polyline { fill: none; stroke-width: 3.5; }
+        .sparkline {
+            width: 120px;
+            height: 45px;
+        }
+        .sparkline polyline {
+            fill: none;
+            stroke-width: 3.5;
+        }
 
-        .theme-toggle { cursor: pointer; color: #fff; font-size: 1.3rem; margin-left: 20px; border: none; background: none; }
-        .custom-footer { background: #020617; color: #f8fafc; padding: 60px 0; margin-top: auto; }
-        .footer-socials { margin-top: 30px; display: flex; justify-content: center; gap: 45px; }
-        .footer-socials a { color: #3b82f6; font-size: 2rem; transition: transform 0.3s, color 0.3s; }
-        .footer-socials a:hover { color: #fff; transform: scale(1.2); }
+        .theme-toggle {
+            cursor: pointer;
+            color: #fff;
+            font-size: 1.3rem;
+            margin-left: 20px;
+            border: none;
+            background: none;
+        }
+        .custom-footer {
+            background: #020617;
+            color: #f8fafc;
+            padding: 60px 0;
+            margin-top: auto;
+        }
+        .footer-socials {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 45px;
+        }
+        .footer-socials a {
+            color: #3b82f6;
+            font-size: 2rem;
+            transition: transform 0.3s, color 0.3s;
+        }
+        .footer-socials a:hover {
+            color: #fff;
+            transform: scale(1.2);
+        }
 
         .update-time-badge {
             background: var(--bg-color);
@@ -78,20 +194,294 @@
             white-space: nowrap;
         }
 
+        /* MOBİL OPTİMİZASYONLAR */
         @media (max-width: 768px) {
-            .filter-container {
-                flex-direction: column;
-                align-items: stretch;
+            /* Tablo başlığını mobilde gizle */
+            .economy-header {
+                display: none !important;
             }
 
-            .update-time-badge {
+            /* Kartları mobil için yeniden düzenle */
+            .economy-card {
+                display: flex !important;
+                flex-direction: column;
+                align-items: stretch;
+                padding: 15px;
+                gap: 12px;
+            }
+
+            /* Üst kısım - Logo ve isim */
+            .eco-left {
+                width: 100%;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 10px;
+            }
+
+            .eco-left i {
+                font-size: 2rem;
+            }
+
+            .eco-label {
+                font-size: 1.2rem;
+                font-weight: 700;
+            }
+
+            /* Google fiyatı - Belirgin göster */
+            .google-price {
+                font-size: 1.5rem;
+                font-weight: 800;
+                color: var(--primary);
                 text-align: center;
-                order: -1; /* En üstte görünmesi için */
+                background: var(--bg-color);
+                padding: 10px;
+                border-radius: 12px;
+                margin: 5px 0;
+            }
+
+            /* Alış/Satış grid */
+            .mobile-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .price-box {
+                background: var(--bg-color);
+                padding: 12px;
+                border-radius: 12px;
+                text-align: center;
+            }
+
+            .price-label {
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                text-transform: uppercase;
                 margin-bottom: 5px;
             }
 
+            .buy, .sell {
+                font-size: 1.2rem;
+                font-weight: 700;
+            }
+
+            .buy {
+                color: var(--up-color);
+            }
+
+            .sell {
+                color: var(--down-color);
+            }
+
+            /* Trend ve günlük değişim */
+            .change-box {
+                grid-column: 1 / -1;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: var(--bg-color);
+                padding: 12px;
+                border-radius: 12px;
+                margin-top: 5px;
+            }
+
+            .sparkline-container {
+                flex: 1;
+                max-width: 120px;
+            }
+
+            .sparkline {
+                width: 100%;
+                height: 35px;
+            }
+
+            .up, .down {
+                font-size: 1.3rem !important;
+                font-weight: 800;
+                min-width: 80px;
+                text-align: right;
+            }
+
+            /* Filtre container mobil düzeni */
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 15px;
+            }
+
             .sort-btn-group {
+                width: 100%;
                 justify-content: center;
+                overflow-x: auto;
+                padding-bottom: 5px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .sort-btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+                white-space: nowrap;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-box input {
+                min-width: 100% !important;
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            /* Update time badge */
+            .update-time-badge {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 5px;
+                padding: 8px;
+                font-size: 0.9rem;
+                order: -1;
+            }
+
+            /* Kategori başlıkları */
+            .category-title {
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+            }
+
+            /* Ana başlık */
+            h1.display-4 {
+                font-size: 2rem !important;
+            }
+
+            .fs-5 {
+                font-size: 1rem !important;
+            }
+
+            /* Navbar mobil */
+            .navbar-brand span {
+                padding: 4px 10px !important;
+                font-size: 1.1rem;
+            }
+
+            .navbar-nav {
+                margin: 10px 0 !important;
+            }
+
+            .nav-link {
+                padding: 8px 0 !important;
+            }
+        }
+
+        /* ÇOK KÜÇÜK EKRANLAR (320px ve altı) */
+        @media (max-width: 380px) {
+            .economy-card {
+                padding: 12px;
+            }
+
+            .eco-left i {
+                font-size: 1.6rem;
+            }
+
+            .eco-label {
+                font-size: 1rem;
+            }
+
+            .google-price {
+                font-size: 1.3rem;
+                padding: 8px;
+            }
+
+            .buy, .sell {
+                font-size: 1rem;
+            }
+
+            .up, .down {
+                font-size: 1.1rem !important;
+                min-width: 60px;
+            }
+
+            .sparkline {
+                height: 30px;
+            }
+
+            .sort-btn {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* TABLET İÇİN */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .economy-card {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1.5fr 1.5fr 1fr;
+                padding: 18px;
+            }
+
+            .eco-left {
+                width: auto;
+            }
+
+            .mobile-grid {
+                display: contents;
+            }
+
+            .google-price {
+                display: none;
+            }
+
+            .economy-header {
+                display: grid;
+            }
+        }
+
+        /* MASAÜSTÜ İÇİN ORİJİNAL GÖRÜNÜM */
+        @media (min-width: 1025px) {
+            .economy-header {
+                display: grid;
+            }
+
+            .economy-card {
+                display: grid;
+                grid-template-columns: 2.5fr 1.2fr 1.6fr 1.6fr 1fr;
+                align-items: center;
+                padding: 22px;
+            }
+
+            .eco-left {
+                width: auto;
+            }
+
+            .mobile-grid {
+                display: contents;
+            }
+
+            .google-price {
+                display: none;
+            }
+
+            .price-box {
+                background: none;
+                padding: 0;
+            }
+
+            .price-label {
+                display: none;
+            }
+
+            .change-box {
+                display: contents;
+            }
+
+            .center {
+                text-align: center;
+            }
+
+            .sparkline {
+                width: 120px;
+                height: 45px;
             }
         }
     </style>
@@ -105,17 +495,27 @@
      th:data-ceyrek="#{asset.gold.quarter}" th:data-yarim="#{asset.gold.half}" th:data-tam="#{asset.full_gold}"
      th:data-republic="#{asset.republic_gold}" th:data-cut="#{asset.gold.cut}" th:data-silver="#{asset.silver}"
      th:data-copper="#{asset.copper}" th:data-btc="#{asset.btc}" th:data-eth="#{asset.eth}"
-     th:data-gold-head="#{asset.gold.gram}">
+     th:data-gold-head="#{asset.gold.gram}"
+     th:data-buy="#{economy.col.buy}" th:data-sell="#{economy.col.sell}"
+     th:data-change="#{economy.col.daily}" th:data-trend="#{economy.col.trend}"
+     th:data-price="#{economy.col.price}" th:data-asset="#{economy.col.asset}"
+     th:data-google="#{economy.col.google}" th:data-updating="#{economy.updating}"
+     th:data-update-failed="#{economy.update.failed}" th:data-last-update="#{economy.last.update}">
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container">
         <a class="navbar-brand" th:href="@{/}"><span style="background:var(--primary);padding:6px 14px;border-radius:10px;font-weight:bold;">A</span></a>
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item"><a class="nav-link" th:href="@{/}" th:text="#{menu.home}"></a></li>
-            <li class="nav-item"><a class="nav-link" th:href="@{/about}" th:text="#{menu.about}"></a></li>
-            <li class="nav-item"><a id="cvDownloadBtn" class="nav-link" th:href="@{/cv/download}" th:text="#{menu.cv}"></a></li>
-        </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}" th:text="#{menu.home}"></a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/about}" th:text="#{menu.about}"></a></li>
+                <li class="nav-item"><a id="cvDownloadBtn" class="nav-link" th:href="@{/cv/download}" th:text="#{menu.cv}"></a></li>
+            </ul>
+        </div>
         <div class="d-flex align-items-center">
             <button class="lang-link me-2" th:classappend="${#locale.language=='tr'}?'lang-active':''" onclick="setLang('tr')">TR</button>
             <button class="lang-link" th:classappend="${#locale.language=='en'}?'lang-active':''" onclick="setLang('en')">EN</button>
@@ -133,19 +533,19 @@
     <div class="filter-container">
         <div class="sort-btn-group">
             <button class="sort-btn active" onclick="updateSort('google')" id="btn-google">
-                Google <i id="icon-google" class="fas fa-sort-down"></i>
+                <span th:text="#{economy.col.google}">Google</span> <i id="icon-google" class="fas fa-sort-down"></i>
             </button>
             <button class="sort-btn" onclick="updateSort('buy')" id="btn-buy">
-                Alış <i id="icon-buy" class="fas fa-sort"></i>
+                <span th:text="#{economy.col.buy}">Alış</span> <i id="icon-buy" class="fas fa-sort"></i>
             </button>
             <button class="sort-btn" onclick="updateSort('sell')" id="btn-sell">
-                Satış <i id="icon-sell" class="fas fa-sort"></i>
+                <span th:text="#{economy.col.sell}">Satış</span> <i id="icon-sell" class="fas fa-sort"></i>
             </button>
         </div>
 
         <div class="update-time-badge">
             <i class="fas fa-clock text-muted me-1"></i>
-            <span id="lastUpdateTime" class="text-muted" style="font-size: 0.85rem;">Yükleniyor...</span>
+            <span id="lastUpdateTime" class="text-muted" style="font-size: 0.85rem;" th:text="#{economy.loading}">Yükleniyor...</span>
         </div>
 
         <div class="search-box">
@@ -157,18 +557,22 @@
     <div id="category-gold" class="category-section">
         <h2 class="category-title"><i class="fas fa-coins text-warning"></i> <span th:text="#{asset.gold}"></span></h2>
         <div class="economy-header">
-            <div th:text="#{economy.col.asset}"></div><div th:text="#{economy.col.google}"></div><div th:text="#{economy.col.trend}"></div><div th:text="#{economy.col.price}"></div><div th:text="#{economy.col.daily}"></div>
+            <div th:text="#{economy.col.asset}"></div>
+            <div th:text="#{economy.col.google}"></div>
+            <div th:text="#{economy.col.trend}"></div>
+            <div><span th:text="#{economy.col.buy}"></span> / <span th:text="#{economy.col.sell}"></span></div>
+            <div th:text="#{economy.col.daily}"></div>
         </div>
         <div class="category-list"></div>
     </div>
 
     <div id="category-currency" class="category-section">
-        <h2 class="category-title"><i class="fas fa-money-bill-wave text-success"></i> <span th:text="#{economy.col.asset}"></span></h2>
+        <h2 class="category-title"><i class="fas fa-money-bill-wave text-success"></i> <span th:text="#{economy.currencies}"></span></h2>
         <div class="category-list"></div>
     </div>
 
     <div id="category-other" class="category-section">
-        <h2 class="category-title"><i class="fas fa-chart-line text-primary"></i> <span th:text="#{asset.copper}"></span> & Emtia</h2>
+        <h2 class="category-title"><i class="fas fa-chart-line text-primary"></i> <span th:text="#{asset.copper}"></span> & <span th:text="#{economy.commodities}"></span></h2>
         <div class="category-list"></div>
     </div>
 </main>
@@ -186,12 +590,27 @@
     </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     let allAssets = [];
     let currentSort = { field: 'google', dir: 'desc' };
     const lang = document.documentElement.lang || 'tr';
     const symbol = lang === 'tr' ? '₺' : '$';
     const i18n = document.getElementById('i18n-store').dataset;
+
+    // i18n metinleri
+    const texts = {
+        buy: i18n.buy || (lang === 'tr' ? 'ALIŞ' : 'BUY'),
+        sell: i18n.sell || (lang === 'tr' ? 'SATIŞ' : 'SELL'),
+        change: i18n.change || (lang === 'tr' ? 'GÜNLÜK' : 'DAILY'),
+        trend: i18n.trend || (lang === 'tr' ? 'TREND' : 'TREND'),
+        price: i18n.price || (lang === 'tr' ? 'FİYAT' : 'PRICE'),
+        asset: i18n.asset || (lang === 'tr' ? 'VARLIK' : 'ASSET'),
+        google: i18n.google || (lang === 'tr' ? 'GOOGLE' : 'GOOGLE'),
+        updating: i18n.updating || (lang === 'tr' ? 'Güncelleniyor...' : 'Updating...'),
+        lastUpdate: i18n.lastUpdate || (lang === 'tr' ? 'Son güncelleme' : 'Last update'),
+        updateFailed: i18n.updateFailed || (lang === 'tr' ? 'Güncelleme başarısız' : 'Update failed')
+    };
 
     document.addEventListener('DOMContentLoaded', function() {
         updateLastUpdateTime();
@@ -203,23 +622,17 @@
 
         const now = new Date();
 
-        // Format HH:MM:SS
         const hours = now.getHours().toString().padStart(2, '0');
         const minutes = now.getMinutes().toString().padStart(2, '0');
         const seconds = now.getSeconds().toString().padStart(2, '0');
         const timeStr = `${hours}:${minutes}:${seconds}`;
 
-        // Format GG/AA/YYYY
         const day = now.getDate().toString().padStart(2, '0');
         const month = (now.getMonth() + 1).toString().padStart(2, '0');
         const year = now.getFullYear();
         const dateStr = `${day}/${month}/${year}`;
 
-        if (lang === 'tr') {
-            timeElement.textContent = `Son güncelleme: ${dateStr} ${timeStr}`;
-        } else {
-            timeElement.textContent = `Last update: ${dateStr} ${timeStr}`;
-        }
+        timeElement.textContent = `${texts.lastUpdate}: ${dateStr} ${timeStr}`;
     }
 
     function toggleTheme() {
@@ -274,23 +687,70 @@
             return `${x},${y}`;
         }).join(' ');
 
+        const formatPrice = (price) => {
+            return price.toLocaleString(lang, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        };
+
+        // Masaüstü görünümü
+        const desktopView = `
+            <div class="center fw-bold fs-5 d-none d-md-block">${symbol}${formatPrice(a.google)}</div>
+            <div class="center d-none d-md-block">
+                <div class="sparkline-container ${trendClass}">
+                    <svg class="sparkline" viewBox="0 0 120 45"><polyline points="${points}" style="stroke: ${color}"/></svg>
+                </div>
+            </div>
+            <div class="center d-none d-md-block">
+                <div class="buy">${symbol}${formatPrice(a.buy)}</div>
+                <div class="sell">${symbol}${formatPrice(a.sell)}</div>
+            </div>
+            <div class="center ${up ? 'up' : 'down'} d-none d-md-block">${up ? '▲' : '▼'} %${Math.abs(a.change).toFixed(2)}</div>
+        `;
+
+        // Mobil görünüm
+        const mobileView = `
+            <div class="google-price d-block d-md-none">
+                ${symbol}${formatPrice(a.google)}
+            </div>
+
+            <div class="mobile-grid d-block d-md-none">
+                <div class="price-box">
+                    <div class="price-label">${texts.buy}</div>
+                    <div class="buy">${symbol}${formatPrice(a.buy)}</div>
+                </div>
+
+                <div class="price-box">
+                    <div class="price-label">${texts.sell}</div>
+                    <div class="sell">${symbol}${formatPrice(a.sell)}</div>
+                </div>
+
+                <div class="change-box">
+                    <div class="sparkline-container ${trendClass}">
+                        <svg class="sparkline" viewBox="0 0 120 45">
+                            <polyline points="${points}" style="stroke: ${color}"/>
+                        </svg>
+                    </div>
+                    <div class="${up ? 'up' : 'down'}">
+                        ${up ? '▲' : '▼'} %${Math.abs(a.change).toFixed(2)}
+                    </div>
+                </div>
+            </div>
+        `;
+
         return `
             <div class="economy-card">
                 <div class="eco-left">
-                    <i class="fas ${a.icon}" style="color:${a.color}"></i>
-                    <span class="eco-label">${a.name}</span>
-                </div>
-                <div class="center fw-bold fs-5">${symbol}${a.google.toLocaleString(lang, {minimumFractionDigits:2})}</div>
-                <div class="center">
-                    <div class="sparkline-container ${trendClass}">
-                        <svg class="sparkline" viewBox="0 0 120 45"><polyline points="${points}" style="stroke: ${color}"/></svg>
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="fas ${a.icon}" style="color:${a.color}"></i>
+                        <span class="eco-label">${a.name}</span>
                     </div>
+                    <small class="text-muted d-block d-md-none">${symbol}${formatPrice(a.google)}</small>
                 </div>
-                <div class="center">
-                    <div class="buy">${symbol}${a.buy.toLocaleString(lang, {minimumFractionDigits:2})}</div>
-                    <div class="sell">${symbol}${a.sell.toLocaleString(lang, {minimumFractionDigits:2})}</div>
-                </div>
-                <div class="center ${up ? 'up' : 'down'}">${up ? '▲' : '▼'} %${Math.abs(a.change).toFixed(2)}</div>
+
+                ${desktopView}
+                ${mobileView}
             </div>`;
     }
 
@@ -306,8 +766,12 @@
             document.querySelector(`#category-${cat} .category-list`).innerHTML = filtered.map(createCard).join('');
         });
     }
+
     async function loadEconomy(){
         try {
+            const timeElement = document.getElementById('lastUpdateTime');
+            if (timeElement) timeElement.textContent = texts.updating;
+
             const responses = await Promise.all([...Array(5)].map((_, i) => {
                 const d = new Date(); d.setUTCDate(d.getUTCDate() - i);
                 const dateStr = d.toISOString().split('T')[0];
@@ -323,11 +787,12 @@
                     return isTr ? (val * d.try) : val;
                 }).reverse();
                 const now = history[history.length - 1];
-                const old = history[history.length - 2];
+                const old = history[history.length - 2] || now;
                 return {
                     name: i18n[nameKey] || nameKey, icon, color, category,
                     google: now, buy: now * 0.996, sell: now * 1.004,
-                    change: ((now - old) / old) * 100, history: history
+                    change: old ? ((now - old) / old) * 100 : 0,
+                    history: history
                 };
             };
 
@@ -346,8 +811,8 @@
                 make('gbp', 'fa-pound-sign', '#4f46e5', 'currency', d => 1 / d.gbp),
                 make('azn', 'fa-manat-sign', '#22c55e', 'currency', d => 1 / d.azn),
                 make('kwd', 'fa-money-bill', '#0f766e', 'currency', d => 1 / d.kwd),
-                make('leva', 'fa-money-bill-wave', '#059669', 'currency', d => 1 / d.bgn), // Bulgar Levası eklendi
-                make('ruble', 'fa-ruble-sign', '#b45309', 'currency', d => 1 / d.rub), // Rus Rublesi eklendi
+                make('leva', 'fa-money-bill-wave', '#059669', 'currency', d => 1 / d.bgn),
+                make('ruble', 'fa-ruble-sign', '#b45309', 'currency', d => 1 / d.rub),
 
                 make('btc', 'fa-bitcoin', '#f59e0b', 'other', d => 1 / d.btc),
                 make('eth', 'fa-ethereum', '#627eea', 'other', d => 1 / d.eth),
@@ -357,27 +822,29 @@
 
             applyFiltersAndSort();
             updateLastUpdateTime();
-        } catch (e) { console.error("Veri yüklenemedi:", e); }
+        } catch (e) {
+            console.error("Veri yüklenemedi:", e);
+            document.getElementById('lastUpdateTime').textContent = texts.updateFailed;
+        }
     }
+
     document.addEventListener('DOMContentLoaded', loadEconomy);
 
     document.getElementById('cvDownloadBtn').addEventListener('click', function(e) {
-    e.preventDefault(); // Sayfanın yönlenmesini veya dosyanın hemen inmesini engelle
-
-    const downloadUrl = this.href;
-
-    fetch(downloadUrl, { method: 'HEAD' })
-        .then(response => {
-            if (response.status === 403) {
-                alert("(403 Forbidden)");
-            } else if (response.ok) {
-                window.location.href = downloadUrl;
-            }
-        })
-        .catch(error => {
-            alert("Error.");
-        });
-});
+        e.preventDefault();
+        const downloadUrl = this.href;
+        fetch(downloadUrl, { method: 'HEAD' })
+            .then(response => {
+                if (response.status === 403) {
+                    alert("(403 Forbidden)");
+                } else if (response.ok) {
+                    window.location.href = downloadUrl;
+                }
+            })
+            .catch(error => {
+                alert("Error.");
+            });
+    });
 </script>
 </body>
 </html>
