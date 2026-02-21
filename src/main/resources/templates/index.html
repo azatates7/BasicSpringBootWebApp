@@ -31,7 +31,6 @@
         .lang-link { color: #fff; font-size: .85rem; background: none; border: none; opacity: .6; cursor: pointer; }
         .lang-active { opacity: 1; font-weight: 700; border-bottom: 2px solid var(--primary); }
 
-        /* FILTRE & SIRALAMA ALANI */
         .filter-container { background: var(--card-bg); padding: 25px; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; gap: 20px; flex-wrap: wrap; align-items: center; justify-content: space-between; border: 1px solid var(--border-color); }
         .sort-btn-group { display: flex; gap: 8px; }
         .sort-btn { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 14px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
@@ -49,7 +48,6 @@
         .economy-card { background: var(--card-bg); border-radius: 18px; padding: 22px; margin-bottom: 15px; border: 1px solid var(--border-color); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .economy-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
 
-        /* LOGOLAR BÜYÜTÜLDÜ */
         .eco-left { display: flex; align-items: center; gap: 18px; }
         .eco-left i { font-size: 2.6rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
         .eco-label { font-weight: 700; color: var(--text-main); font-size: 1.15rem; }
@@ -71,6 +69,31 @@
         .footer-socials { margin-top: 30px; display: flex; justify-content: center; gap: 45px; }
         .footer-socials a { color: #3b82f6; font-size: 2rem; transition: transform 0.3s, color 0.3s; }
         .footer-socials a:hover { color: #fff; transform: scale(1.2); }
+
+        .update-time-badge {
+            background: var(--bg-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .update-time-badge {
+                text-align: center;
+                order: -1; /* En üstte görünmesi için */
+                margin-bottom: 5px;
+            }
+
+            .sort-btn-group {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body data-bs-theme="light">
@@ -81,7 +104,7 @@
      th:data-leva="#{asset.leva}" th:data-ruble="#{asset.ruble}" th:data-gram="#{asset.gold.gram}"
      th:data-ceyrek="#{asset.gold.quarter}" th:data-yarim="#{asset.gold.half}" th:data-tam="#{asset.full_gold}"
      th:data-republic="#{asset.republic_gold}" th:data-cut="#{asset.gold.cut}" th:data-silver="#{asset.silver}"
-     th:data-copper="#{asset.copper}" th:data-btc="#{asset.btc}"
+     th:data-copper="#{asset.copper}" th:data-btc="#{asset.btc}" th:data-eth="#{asset.eth}"
      th:data-gold-head="#{asset.gold.gram}">
 </div>
 
@@ -119,6 +142,12 @@
                 Satış <i id="icon-sell" class="fas fa-sort"></i>
             </button>
         </div>
+
+        <div class="update-time-badge">
+            <i class="fas fa-clock text-muted me-1"></i>
+            <span id="lastUpdateTime" class="text-muted" style="font-size: 0.85rem;">Yükleniyor...</span>
+        </div>
+
         <div class="search-box">
             <input type="text" id="searchInput" class="form-control" style="min-width:320px;"
                    th:placeholder="#{economy.search.placeholder}" oninput="applyFiltersAndSort()">
@@ -164,6 +193,35 @@
     const symbol = lang === 'tr' ? '₺' : '$';
     const i18n = document.getElementById('i18n-store').dataset;
 
+    document.addEventListener('DOMContentLoaded', function() {
+        updateLastUpdateTime();
+    });
+
+    function updateLastUpdateTime() {
+        const timeElement = document.getElementById('lastUpdateTime');
+        if (!timeElement) return;
+
+        const now = new Date();
+
+        // Format HH:MM:SS
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const timeStr = `${hours}:${minutes}:${seconds}`;
+
+        // Format GG/AA/YYYY
+        const day = now.getDate().toString().padStart(2, '0');
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const year = now.getFullYear();
+        const dateStr = `${day}/${month}/${year}`;
+
+        if (lang === 'tr') {
+            timeElement.textContent = `Son güncelleme: ${dateStr} ${timeStr}`;
+        } else {
+            timeElement.textContent = `Last update: ${dateStr} ${timeStr}`;
+        }
+    }
+
     function toggleTheme() {
         const newTheme = document.body.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
         document.body.setAttribute('data-bs-theme', newTheme);
@@ -180,7 +238,6 @@
         window.location.href = url.toString();
     }
 
-    // SIRALAMA GÜNCELLEME (ARTAN/AZALAN İKONLARI İLE)
     function updateSort(field) {
         if (currentSort.field === field) {
             currentSort.dir = currentSort.dir === 'desc' ? 'asc' : 'desc';
@@ -192,7 +249,6 @@
         document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`btn-${field}`).classList.add('active');
 
-        // İkonları sıfırla ve seçili olanı güncelle
         ['google', 'buy', 'sell'].forEach(f => {
             const icon = document.getElementById(`icon-${f}`);
             if (f === currentSort.field) {
@@ -250,7 +306,6 @@
             document.querySelector(`#category-${cat} .category-list`).innerHTML = filtered.map(createCard).join('');
         });
     }
-
     async function loadEconomy(){
         try {
             const responses = await Promise.all([...Array(5)].map((_, i) => {
@@ -285,20 +340,25 @@
                 make('yarim', 'fa-coins', '#d4af37', 'gold', d => getGramUsd(d) * 3.26),
                 make('tam', 'fa-circle-dot', '#d4af37', 'gold', d => getGramUsd(d) * 6.52),
                 make('republic', 'fa-landmark', '#b8860b', 'gold', d => getGramUsd(d) * 6.71),
+
                 make('usd', 'fa-dollar-sign', '#16a34a', 'currency', d => 1),
                 make('eur', 'fa-euro-sign', '#2563eb', 'currency', d => 1 / d.eur),
                 make('gbp', 'fa-pound-sign', '#4f46e5', 'currency', d => 1 / d.gbp),
                 make('azn', 'fa-manat-sign', '#22c55e', 'currency', d => 1 / d.azn),
                 make('kwd', 'fa-money-bill', '#0f766e', 'currency', d => 1 / d.kwd),
+                make('leva', 'fa-money-bill-wave', '#059669', 'currency', d => 1 / d.bgn), // Bulgar Levası eklendi
+                make('ruble', 'fa-ruble-sign', '#b45309', 'currency', d => 1 / d.rub), // Rus Rublesi eklendi
+
                 make('btc', 'fa-bitcoin', '#f59e0b', 'other', d => 1 / d.btc),
+                make('eth', 'fa-ethereum', '#627eea', 'other', d => 1 / d.eth),
                 make('silver', 'fa-leaf', '#9ca3af', 'other', d => (1 / d.xag) / 31.1035),
                 make('copper', 'fa-cubes', '#b87333', 'other', d => 9.20)
             ];
 
             applyFiltersAndSort();
+            updateLastUpdateTime();
         } catch (e) { console.error("Veri yüklenemedi:", e); }
     }
-
     document.addEventListener('DOMContentLoaded', loadEconomy);
 
     document.getElementById('cvDownloadBtn').addEventListener('click', function(e) {

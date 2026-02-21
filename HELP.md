@@ -9,6 +9,15 @@ For further reference, please consider the following sections:
 * [Spring Web](https://docs.spring.io/spring-boot/4.0.1/reference/web/servlet.html)
 * [Thymeleaf](https://docs.spring.io/spring-boot/4.0.1/reference/web/servlet.html#web.servlet.spring-mvc.template-engines)
 
+Technologies
+* Java SDK 17
+* Spring Boot
+* Thymeleaf
+* i18n
+* slf4j Logger
+* Docker
+* Scheduled RestTemplate
+
 ### Guides
 The following guides illustrate how to use some features concretely:
 
