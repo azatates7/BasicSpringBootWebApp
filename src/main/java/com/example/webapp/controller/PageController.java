@@ -30,10 +30,10 @@ public class PageController {
     @GetMapping("/cv/download")
     public ResponseEntity<Resource> downloadCv() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        var url = attributes.getRequest().getRequestURL().toString();
-        if (!url.contains("127.0.0.1") && !url.contains("0:0:0:0:0:0:0:1") && !url.contains(("localhost"))) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+        // var url = attributes.getRequest().getRequestURL().toString();
+        // if (!url.contains("127.0.0.1") && !url.contains("0:0:0:0:0:0:0:1") && !url.contains(("localhost"))) {
+        //     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        // }
 
         Resource resource = new ClassPathResource("static/files/cv.pdf");
 
