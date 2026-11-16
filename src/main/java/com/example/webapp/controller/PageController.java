@@ -40,9 +40,15 @@ public class PageController {
                 .body(resource);
     }
 
-    // Signal Strength Privacy Page
+    // Signal Strength (Android) privacy policy url — Play Console public privacy policy link
     @GetMapping({"/privacy/signal-strength", "/privacy/signal-strength/"})
-    public String signalStrengthPrivacy() {
-        return "forward:/privacy/signal-strength.html";
+    public ResponseEntity<Resource> signalStrengthPrivacy() {
+        Resource resource = new ClassPathResource("static/privacy/signal-strength.html");
+        if (!resource.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok()
+                .contentType(new MediaType("text", "html", java.nio.charset.StandardCharsets.UTF_8))
+                .body(resource);
     }
 }
